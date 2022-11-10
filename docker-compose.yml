@@ -1,0 +1,15 @@
+services:
+  server:
+    build:
+      context: ./Server/Flask-Service
+      dockerfile: Dockerfile
+    image: python-docker-template
+    ports:
+      - "4000:4000"
+  client:
+    build:
+      context: ./Client/react-app
+      dockerfile: Dockerfile
+    image: react-docker-template
+    ports:
+      - "3000:3000"

@@ -1,37 +1,31 @@
 // Importing modules
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import axios from 'axios'
+import logo from './logo.svg';
 
 function App() {
-  // usestate for setting a javascript
-  // object for storing and using data
-  const [data, setdata] = useState({
-    name: "",
-    age: 0,
-    date: "",
-    programming: "",
-  });
+  const [getMessage, setGetMessage] = useState({})
 
-  // Using useEffect for single rendering
   useEffect(() => {
-    // Using fetch to fetch the api from
-    // flask server it will be redirected to proxy
-    fetch("/data").then((res) =>
-      res.json().then((data) => {
-        // Setting a data from api
-        setdata({
-          local_data: data.backend_data,
-        });
-      })
-    );
-  }, []);
-
+    axios.get('http://127.0.0.1:4000/data').then(response => {
+      console.log("SUCCESS", response)
+      setGetMessage(response)
+    }).catch(error => {
+      console.log(error)
+    })
+  }, [])
   return (
     <div className="App">
       <header className="App-header">
-        <h1>React and flask</h1>
-        {/* Calling a data from setdata for showing */}
-        <p>{data.local_data}</p>
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>React + Flask Dockerized application</p>
+        <div>{getMessage.status === 200 ?
+
+          // <h3>{JSON.stringify(getMessage.data)}</h3>
+          <h3>{getMessage.data.backend_data}</h3>
+          :
+          <h3>LOADING</h3>}</div>
       </header>
     </div>
   );
